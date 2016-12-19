@@ -22,11 +22,14 @@
 package com.sample;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioInterrupt;
@@ -44,26 +47,35 @@ public class MainApp {
     private static final int GPIO7 = 7;                       //GPIO7
     private static final int fail  = -1;
 	
+    private static JTextField textfield;
+    
+    private static int count = 0;
+    
 	public static void main(String[] args) {
 
         // window_height = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
         // window_width = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width		
 		window_width = window_height = 400;       
 
+
         main = new JFrame();
         main.setTitle("Java Project Sample Raspberry");
+        main.setLayout(new FlowLayout());
         
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
 
         main.setBounds(0,0,window_width, window_height);
         main.setLocationRelativeTo(null);
         
+        textfield = new JTextField();
+        textfield.setEditable(false);
+        textfield.setBounds(10, 10, 200, 50);
+        textfield.setPreferredSize(new Dimension(200,50));
+        textfield.setMaximumSize(new Dimension(200,50));
+        main.add(textfield);
         HideCursor();
-        
         InitPI();
-        
         main.setVisible(true);
-
 	}
 	
 	private static void InitPI() {
@@ -96,8 +108,8 @@ public class MainApp {
 	}
 
 	private static void button_down() {
-		System.out.println("Button is pushed");
-		
+		count ++;
+		textfield.setText("Button is pushed " + count);
 	}
 
 	private static void HideCursor() {
